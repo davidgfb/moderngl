@@ -1,16 +1,15 @@
 import numpy as np
 from pyrr import Matrix44
-
 import moderngl
-from ported._example import Example
+from moderngl_window import WindowConfig
 
-
-class InstancedCrates(Example):
+class InstancedCrates(WindowConfig):
     '''
         This example renders 32x32 crates.
         For each crate the location is [x, y, sin(a * time + b)]
         There are 1024 crates aligned in a grid.
     '''
+    resource_dir = 'data'
     title = "Instanced Crates"
     gl_version = (3, 3)
 
@@ -105,6 +104,4 @@ class InstancedCrates(Example):
         self.texture.use()
         self.vao.render(instances=1024)
 
-
-if __name__ == '__main__':
-    InstancedCrates.run()
+InstancedCrates.run()
