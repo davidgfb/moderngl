@@ -1,7 +1,6 @@
 import moderngl
 from basic_colors_and_texture import ColorsAndTexture
 
-
 class RenderToTexture(ColorsAndTexture):
     title = "Render to Texture"
     gl_version = (3, 3)
@@ -25,6 +24,4 @@ class RenderToTexture(ColorsAndTexture):
                 self.ctx.screen.use()
             super().render(time, frame_time)
 
-
-if __name__ == '__main__':
-    RenderToTexture.run()
+RenderToTexture.run()
