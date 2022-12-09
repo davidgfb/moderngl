@@ -5,10 +5,11 @@ import numpy as np
 from pyrr import Matrix44
 
 import moderngl
-from ported._example import Example
+from moderngl_window import WindowConfig
 
 
-class ColorsAndTexture(Example):
+class ColorsAndTexture(WindowConfig):
+    resource_dir = 'data'
     gl_version = (3, 3)
     title = "Colors and Textures"
 
