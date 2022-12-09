@@ -3,6 +3,8 @@ from pyrr import Matrix44
 from moderngl_window import WindowConfig
 from moderngl import DEPTH_TEST, CULL_FACE
 
+from tkinter import Tk, Frame, LabelFrame, Button
+
 class ColorsAndTexture(WindowConfig):
     #Renders a floating, oscillating, 3d island with lights
     resource_dir, gl_version, title = 'data', (3, 3),\
@@ -101,15 +103,55 @@ class RenderToTexture(ColorsAndTexture):
         self.fbo = self.ctx.framebuffer(self.texture2,\
                                         depth_attachment)
 
-    def render(self, time, frame_time):
+    def render(self, *args): #time, frame_time):
         self.texture = self.texture1
 
         self.fbo.use()
-        super().render(time, frame_time)
+        super().render(*args)
 
         self.texture = self.texture2
 
         self.ctx.screen.use()
-        super().render(time, frame_time)
+        super().render(*args)
+
+from moderngl import create_standalone_context, create_context
+
+class CWindow_tk(Frame, WindowConfig):
+    """
+    It does not matter from what the class inhereted is:
+    """ 
+    def btnCreateContext_onClick (self):
+        self.ctx3 = create_standalone_context()                    
+        self.ctx4 = create_context()        
+        print("CWindow_tk:self.btnCreateContext_onClick : screen.width = {0} , screen.height = {1}".format ( self.ctx4.screen.width, self.ctx4.screen.height) ) 
+
+    def __init__(self, master):
+        fraMain_width = 1290
+        fraMain_height = 880
+        
+        self.ctx0 = create_standalone_context()                    
+        self.ctx1 = create_context()        
+        print("CWindow_tk::__init__ : screen.width = {0},\
+              screen.height = {1}".format(self.ctx1.screen.width,\
+                                          self.ctx1.screen.height) )  
+        
+        self.fraMain = LabelFrame(master, width = fraMain_width,\
+                height = fraMain_height, 
+                text = "Demonstraing the CREATE_CONTEXT()  CTX.SCREEN SIZE problem ------- Look at the printouts on the console")
+        self.fraMain.pack()
+                
+        self.btnRotateClockwise = Button(self.fraMain, 
+                    text = "Create context by this button ", 
+                    command = self.btnCreateContext_onClick )
+        self.btnRotateClockwise.pack(side = 'left')
 
 RenderToTexture.run()
+
+'''root = Tk()
+app  = CWindow_tk(root)
+
+root.geometry("1300x950+30+30")
+root.title("The opengl example '"'render_to_texture_example.py'"' integrated with a Tkinter window"  )    
+root.update()
+root.deiconify()
+root.mainloop()'''
