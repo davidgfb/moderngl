@@ -104,15 +104,14 @@ class RenderToTexture(ColorsAndTexture):
                                         depth_attachment)
 
     def render(self, *args): #time, frame_time):
-        self.texture = self.texture1
+        texturas = (self.texture1, self.texture2)
+        contextos = (self.fbo, self.ctx.screen)
 
-        self.fbo.use()
-        super().render(*args)
-
-        self.texture = self.texture2
-
-        self.ctx.screen.use()
-        super().render(*args)
+        for a, b in ((self.texture1, lambda n = 0 : self.fbo.use()),\
+                     (self.texture2, lambda n = 0 : self.ctx.screen.use())):
+            self.texture = a
+            b()
+            super().render(*args)
 
 from moderngl import create_standalone_context, create_context
 
