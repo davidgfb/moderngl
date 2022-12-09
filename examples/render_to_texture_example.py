@@ -73,17 +73,14 @@ class ColorsAndTexture(WindowConfig):
         self.prog['Mvp'].write((proj * lookat * rotate).astype('f4'))
         self.vao_ground.render()
 
-        self.prog['Color'] = 0.46, 0.67, 0.29
-
-        self.vao_grass.render()
-
-        self.prog['Color'] = ones(3)
-
-        self.vao_billboard.render()
-
-        self.prog['Color'] = ones(3) / 5
-
-        self.vao_holder.render()
+        for a, b in (((0.46, 0.67, 0.29),\
+                       lambda n = 0 : self.vao_grass.render()),\
+                      (ones(3),\
+                       lambda n = 0 : self.vao_billboard.render()),\
+                      (ones(3) / 5,\
+                       lambda n = 0 : self.vao_holder.render())):
+            self.prog['Color'] = a
+            b()       
 
         self.prog['UseTexture'] = True
 
